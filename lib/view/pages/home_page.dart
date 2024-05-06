@@ -35,7 +35,7 @@ class HomePage extends ConsumerWidget {
             } else if (snapshot.data == null) {
               return const Text('null');
             } else {
-              return const Text('data');
+              return const LinearProgressIndicator();
             }
           },
         ));
