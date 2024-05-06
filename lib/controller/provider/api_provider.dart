@@ -4,14 +4,11 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'api_provider.g.dart';
 
-@riverpod
-class Api extends _$Api {
-  @override
-  List<DemoModel>? build()  {
-    return [];
-  }
+final apiProvider = FutureProvider<List<DemoModel>?>((ref) async {
+  return ApiService.fetchdata();
+});
 
-  Future<void> getData() async {
-    state = AsyncValue.data(await ApiService.fetchdata());
-  }
+@riverpod
+Future<List<DemoModel>?> getData(GetDataRef ref) async {
+  return ApiService.fetchdata();
 }

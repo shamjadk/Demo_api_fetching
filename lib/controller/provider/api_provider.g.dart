@@ -6,20 +6,19 @@ part of 'api_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$apiHash() => r'e1ed01a094cc55ebb599b00b17ced50c3172f0d6';
+String _$getDataHash() => r'4189457bc7e54a539ee7c78c7e8434f12c03541a';
 
-/// See also [Api].
-@ProviderFor(Api)
-final apiProvider =
-    AutoDisposeAsyncNotifierProvider<Api, List<DemoModel>?>.internal(
-  Api.new,
-  name: r'apiProvider',
+/// See also [getData].
+@ProviderFor(getData)
+final getDataProvider = AutoDisposeFutureProvider<List<DemoModel>?>.internal(
+  getData,
+  name: r'getDataProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$apiHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$getDataHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Api = AutoDisposeAsyncNotifier<List<DemoModel>?>;
+typedef GetDataRef = AutoDisposeFutureProviderRef<List<DemoModel>?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -1,4 +1,6 @@
-import 'package:demo_project/controller/api_service.dart';
+import 'dart:developer';
+
+import 'package:demo_project/controller/provider/api_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,36 +10,36 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Homepage'),
-        ),
-        body: FutureBuilder(
-          future: ApiService.fetchdata(),
-          builder: (context, snapshot) {
-            final data = snapshot.data;
-            if (snapshot.hasData) {
-              return ListView.builder(
+      appBar: AppBar(
+        title: const Text('Homepage'),
+      ),
+      body: ref.watch(apiProvider).when(
+            data: (data) => ListView.builder(
                 itemCount: data!.length,
-                itemBuilder: (context, index) => ListTile(
-                  leading: CircleAvatar(
-                      backgroundImage: NetworkImage(data[index].avatar)),
-                  title: Text(
-                    snapshot.data![index].name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text('Serial number : ${index + 1}'),
-                ),
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    leading: CircleAvatar(
+                        backgroundImage: NetworkImage(data[index].avatar)),
+                    title: Text(
+                      data[index].name,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: Text('Serial number : ${index + 1}'),
+                  );
+                }),
+            error: (error, stackTrace) {
+              log(error.toString());
+              return Column(
+                children: [
+                  const Text('An error occured'),
+                  IconButton(
+                      onPressed: () => ref.invalidate(apiProvider),
+                      icon: const Icon(Icons.refresh))
+                ],
               );
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const LinearProgressIndicator();
-            } else if (snapshot.hasError) {
-              return const Text('error');
-            } else if (snapshot.data == null) {
-              return const Text('null');
-            } else {
-              return const LinearProgressIndicator();
-            }
-          },
-        ));
+            },
+            loading: () => const LinearProgressIndicator(),
+          ),
+    );
   }
 }
