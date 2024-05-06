@@ -14,11 +14,18 @@ class HomePage extends ConsumerWidget {
         body: FutureBuilder(
           future: ApiService.fetchdata(),
           builder: (context, snapshot) {
+            final data = snapshot.data;
             if (snapshot.hasData) {
               return ListView.builder(
-                itemCount: snapshot.data!.length,
+                itemCount: data!.length,
                 itemBuilder: (context, index) => ListTile(
-                  title: Text(snapshot.data![index].name),
+                  leading: CircleAvatar(
+                      backgroundImage: NetworkImage(data[index].avatar)),
+                  title: Text(
+                    snapshot.data![index].name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text('Serial number : ${index + 1}'),
                 ),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
